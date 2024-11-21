@@ -14,6 +14,7 @@ import services from '../../services';
 import { fetchCardList } from '../reduxTookit/cart/CartListSlice';
 import CheckInternet from '../appScreen/CheckInternet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const WishList = ({ navigation }) => {
@@ -114,7 +115,7 @@ const WishList = ({ navigation }) => {
       }
 
     } else {
-      Alert.alert('Info!','Product is out of stock.')
+      Alert.alert('Info!', 'Product is out of stock.')
     }
   }
   function getUserCartList() {
@@ -141,7 +142,7 @@ const WishList = ({ navigation }) => {
   }
 
   return (
-    <>
+    <SafeAreaView edges={["left", "right", "top"]} style={{ flex: 1, backgroundColor: fBTheme.fBPurple }}>
       {isConnected == true ? (
         <View style={{ flex: 1, backgroundColor: fBTheme.fBLigh, padding: 10 }}>
           <ScrollView
@@ -176,10 +177,10 @@ const WishList = ({ navigation }) => {
                           <Text style={{ color: '#000', marginVertical: 4 }}>{item.get_product_desc[0]?.getBookTypeName?.book_type_name}</Text>
 
                           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4 }}>
-                            <Text style={{ color: '#000', fontWeight:'700'}}>{'₹ ' + item.get_product_desc[0]?.product_sale_price}</Text>
-                            {item.get_product_desc[0]?.product_sale_price<item.get_product_desc[0]?.product_mrp_price?
-                            <Text style={{ marginLeft: 16, textDecorationLine: 'line-through', color: fBTheme.fbGray}}>{'M.R.P ₹ ' + item.get_product_desc[0]?.product_mrp_price}</Text>:null
-                             }
+                            <Text style={{ color: '#000', fontWeight: '700' }}>{'₹ ' + item.get_product_desc[0]?.product_sale_price}</Text>
+                            {item.get_product_desc[0]?.product_sale_price < item.get_product_desc[0]?.product_mrp_price ?
+                              <Text style={{ marginLeft: 16, textDecorationLine: 'line-through', color: fBTheme.fbGray }}>{'M.R.P ₹ ' + item.get_product_desc[0]?.product_mrp_price}</Text> : null
+                            }
                           </View>
                         </View>
                         <View style={{ width: '100%', height: 30, marginTop: 15 }}>
@@ -212,22 +213,22 @@ const WishList = ({ navigation }) => {
           <ModalMsg isVisible={isModalVisible.status}
             animationInTiming={600}
             animationOutTiming={1000}
-            style={{width: '100%', margin: 0}}>
-            <TouchableOpacity style={{ flex: 1}}/>
-            <View style={{ flexDirection: 'row'}}>
-              <View style={{width: 60, height: 60, backgroundColor: fBTheme.fBWhite, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 6, borderBottomLeftRadius: 6}}>
-                <AntDesign name='checkcircleo' size={30} color={fBTheme.fBGreen}/>
+            style={{ width: '100%', margin: 0 }}>
+            <TouchableOpacity style={{ flex: 1 }} />
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ width: 60, height: 60, backgroundColor: fBTheme.fBWhite, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}>
+                <AntDesign name='checkcircleo' size={30} color={fBTheme.fBGreen} />
               </View>
-              <View style={{ flex: 1.5, justifyContent: 'center', backgroundColor: fBTheme.fBWhite, padding: 10, borderTopRightRadius: 6, borderBottomRightRadius: 6}}>
+              <View style={{ flex: 1.5, justifyContent: 'center', backgroundColor: fBTheme.fBWhite, padding: 10, borderTopRightRadius: 6, borderBottomRightRadius: 6 }}>
                 <Text>{isModalVisible.msg}</Text>
               </View>
             </View>
-            <TouchableOpacity style={{flex:.3}}/>
+            <TouchableOpacity style={{ flex: .3 }} />
           </ModalMsg>
         </View>
-      ): null}
-      <CheckInternet isConnected={isConnected} setIsConnected={setIsConnected}/>
-    </>
+      ) : null}
+      <CheckInternet isConnected={isConnected} setIsConnected={setIsConnected} />
+    </SafeAreaView>
   )
 }
 export default WishList

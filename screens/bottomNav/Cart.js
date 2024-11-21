@@ -11,20 +11,23 @@ import { fetchCardList } from '../reduxTookit/cart/CartListSlice';
 import Loader from '../common/Loader';
 import EmptyView from '../common/EmptyView';
 import CheckInternet from '../appScreen/CheckInternet';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { cleanSingle } from 'react-native-image-crop-picker';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Swipeable } from 'react-native-gesture-handler';
+
 
 const Cart = ({ navigation, route }) => {
-  const {addUserData, uniqueID, loginStatus} = useContext(MyData);
+  const { addUserData, uniqueID, loginStatus } = useContext(MyData);
   const [isLoading, setIsLoading] = useState(false)
   const [scrollLoader, setScrollLoader] = useState(false)
   const userCartList = useSelector(state => state.cartList.data);
   const [isConnected, setIsConnected] = useState(false)
   const isFocuse = useIsFocused()
-  
+
   const dispatch = useDispatch()
 
-   
+
   useEffect(() => {
     getUserCartList()
   }, [])
@@ -50,11 +53,11 @@ const Cart = ({ navigation, route }) => {
     }
     Services.post(apiRoot.removeProductFromCart, removeItemPayload)
       .then((res) => {
-        if (res.status == "success"){
+        if (res.status == "success") {
           getUserCartList()
         }
       })
-    }
+  }
   const showConfirmDialog = () => {
     return Alert.alert(
       "Are your sure?",
@@ -72,7 +75,7 @@ const Cart = ({ navigation, route }) => {
       ]
     );
   }
-  function removeAllItems(){
+  function removeAllItems() {
     const removeAllPayload = {
       "token": token,
       "customer_id": addUserData?.customer_id,
@@ -104,7 +107,7 @@ const Cart = ({ navigation, route }) => {
           getUserCartList()
           setIsLoading(false)
         } else {
-          Alert.alert('Info!',res.message);
+          Alert.alert('Info!', res.message);
           setIsLoading(false)
         }
       })
@@ -127,7 +130,7 @@ const Cart = ({ navigation, route }) => {
           setIsLoading(true)
           getUserCartList()
         } else {
-          Alert.alert('Info!',res.message);
+          Alert.alert('Info!', res.message);
           setIsLoading(false)
         }
       })
@@ -154,118 +157,120 @@ const Cart = ({ navigation, route }) => {
   }
 
   function viewProductDetail(item, ind) {
-    navigation.navigate('BookDetail',{
+    navigation.navigate('BookDetail', {
       data: item, index: ind
     })
   }
-  
+
   return (
-    <>
-      {isConnected == true ? (
-        <>
-          {isLoading &&
-            <Loader/>
-          }
-          <View style={{ flex: 1, backgroundColor: fBTheme.fBLigh, padding: 10}}>
-            <>
-              {userCartList.length > 0 &&
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6,}}>
-                  <View style={{ padding: 4 }}>
-                    <Text style={{ fontWeight: '600', color: '#000' }}>Added to Cart</Text>
+    <SafeAreaProvider>
+      <SafeAreaView edges={['top', "left", "right"]} style={{ flex: 1, backgroundColor: fBTheme.fBPurple }}>
+        {isConnected == true ? (
+          <>
+            {isLoading &&
+              <Loader />
+            }
+            <View style={{ flex: 1, backgroundColor: fBTheme.fBLigh, padding: 10 }}>
+              <>
+                {userCartList.length > 0 &&
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6, }}>
+                    <View style={{ padding: 4 }}>
+                      <Text style={{ fontWeight: '600', color: '#000' }}>Added to Cart</Text>
+                    </View>
+                    <TouchableOpacity style={{ backgroundColor: fBTheme.fBPurple, borderRadius: 4, paddingHorizontal: 8, paddingVertical: 6 }}
+                      onPress={() => showConfirmDialog()}
+                    >
+                      <Text style={{ color: fBTheme.fBLigh }}>Remove all</Text>
+                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity style={{ backgroundColor: fBTheme.fBPurple, borderRadius: 4, paddingHorizontal: 8, paddingVertical: 6 }}
-                    onPress={() => showConfirmDialog()}
-                  >
-                    <Text style={{ color: fBTheme.fBLigh }}>Remove all</Text>
-                  </TouchableOpacity>
-                </View>
-              }
+                }
 
-              <ScrollView style={{marginBottom: 70}}
-                contentContainerStyle = {{flexGrow: 1, justifyContent: userCartList.length > 0 ? null:'center'}}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={scrollLoader}
-                    onRefresh={()=>{
-                      setScrollLoader(true);
-                      getUserCartList();
-                    }}
-                    tintColor={fBTheme.fBPurple}
-                    title='Refresh'
-                  />}
-              >
-                {userCartList.length > 0?
-                  <View style={{}}>
-                    {userCartList?.map((item, index) => {
-                      let salePrice = item.getProductDesc[0].product_sale_price * item.quantity
-                      let mrpPrice = item.getProductDesc[0].product_mrp_price * item.quantity
-                      return (
-                        <View style={{marginVertical: 5, flexDirection: 'row', flex: 1, padding: 10, borderRadius: 6, backgroundColor: fBTheme.fBWhite, elevation: .7}} key={index}
-                        >
-                          <TouchableOpacity style={{width: 100, height: 120, borderRadius: 6, overflow: 'hidden'}}
-                           onPress={() => viewProductDetail(item.product_id, index)}
+                <ScrollView style={{ marginBottom: 70 }}
+                  contentContainerStyle={{ flexGrow: 1, justifyContent: userCartList.length > 0 ? null : 'center' }}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={scrollLoader}
+                      onRefresh={() => {
+                        setScrollLoader(true);
+                        getUserCartList();
+                      }}
+                      tintColor={fBTheme.fBPurple}
+                      title='Refresh'
+                    />}
+                >
+                  {userCartList.length > 0 ?
+                    <View style={{}}>
+                      {userCartList?.map((item, index) => {
+                        let salePrice = item.getProductDesc[0].product_sale_price * item.quantity
+                        let mrpPrice = item.getProductDesc[0].product_mrp_price * item.quantity
+                        return (
+                          <View style={{ marginVertical: 5, flexDirection: 'row', flex: 1, padding: 10, borderRadius: 6, backgroundColor: fBTheme.fBWhite, elevation: .7 }} key={index}
                           >
-                            <Image style={{width: '100%', height: '100%'}} source={{uri: item.getProductName.product_image_path + item.getProductDesc[0].product_cover_image}}/>
-                          </TouchableOpacity>
-                          <View style={{paddingHorizontal: 15, flex: 1}}>
-                            <View style={{flex: 1}}>
-                              <Text style={{fontSize: 15, color: '#000', fontWeight: 'bold', textTransform: 'capitalize'}}>{item.getProductName.product_name.length > 30 ? item.getProductName.product_name.substring(0, 27) + '...' : item.getProductName.product_name}</Text>
-                              <Text style={{color: '#000'}}>{item.getProductDesc[0].getBookTypeName.book_type_name}</Text>
+                            <TouchableOpacity style={{ width: 100, height: 120, borderRadius: 6, overflow: 'hidden' }}
+                              onPress={() => viewProductDetail(item.product_id, index)}
+                            >
+                              <Image style={{ width: '100%', height: '100%' }} source={{ uri: item.getProductName.product_image_path + item.getProductDesc[0].product_cover_image }} />
+                            </TouchableOpacity>
+                            <View style={{ paddingHorizontal: 15, flex: 1 }}>
+                              <View style={{ flex: 1 }}>
+                                <Text style={{ fontSize: 15, color: '#000', fontWeight: 'bold', textTransform: 'capitalize' }}>{item.getProductName.product_name.length > 30 ? item.getProductName.product_name.substring(0, 27) + '...' : item.getProductName.product_name}</Text>
+                                <Text style={{ color: '#000' }}>{item.getProductDesc[0].getBookTypeName.book_type_name}</Text>
 
-                              <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-                                <Text style={{ color: '#000' }}>{'₹' + salePrice.toFixed(2)}</Text>
-                                {salePrice<mrpPrice?
-                                <Text style={{ marginLeft: 16, textDecorationLine: 'line-through', color:fBTheme.fbGray}}>{'₹' + mrpPrice.toFixed(2)}</Text>:null
-                                }
-                              </View>
-                            </View>
-
-                            <View style={{ width: '100%', height: 30, flexDirection: 'row', marginTop: 15, justifyContent: 'space-between'}}>
-                              <View style={{ width: '60%', borderRadius: 4, flex: 1, paddingHorizontal: 6, flexDirection: 'row' }}>
-                                <TouchableOpacity style={{ width: 35, borderRadius: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: fBTheme.fBPurple, opacity: item.quantity == 1 ? .5 : 1 }}
-                                  disabled={item.quantity == 1 ? true : false}
-                                  onPress={() => {
-                                    itemDecrement(item)
-                                  }}
-                                >
-                                  <Text style={{ textAlign: 'center', color: fBTheme.fBWhite }}>-</Text>
-                                </TouchableOpacity>
-
-                                <Text style={{ width: 45, paddingHorizontal: 4, paddingVertical: 6, textAlign: 'center', color:'#000' }}>{item.quantity}</Text>
-
-                                <TouchableOpacity style={{width: 35, borderRadius: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: fBTheme.fBPurple,}}
-                                  onPress={() => {
-                                    itemIncrement(item)
-                                  }}
-                                >
-                                  <Text style={{ textAlign: 'center', color: fBTheme.fBWhite}}>+</Text>
-                                </TouchableOpacity>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                                  <Text style={{ color: '#000' }}>{'₹' + salePrice.toFixed(2)}</Text>
+                                  {salePrice < mrpPrice ?
+                                    <Text style={{ marginLeft: 16, textDecorationLine: 'line-through', color: fBTheme.fbGray }}>{'₹' + mrpPrice.toFixed(2)}</Text> : null
+                                  }
+                                </View>
                               </View>
 
-                              <TouchableOpacity style={{}}
-                                onPress={() => {removeCartItem(item)}}>
-                                <MaterialCommunityIcons name={'delete'} size={30} color={fBTheme.fBRed}/>
-                              </TouchableOpacity>
+                              <View style={{ width: '100%', height: 30, flexDirection: 'row', marginTop: 15, justifyContent: 'space-between' }}>
+                                <View style={{ width: '60%', borderRadius: 4, flex: 1, paddingHorizontal: 6, flexDirection: 'row' }}>
+                                  <TouchableOpacity style={{ width: 35, borderRadius: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: fBTheme.fBPurple, opacity: item.quantity == 1 ? .5 : 1 }}
+                                    disabled={item.quantity == 1 ? true : false}
+                                    onPress={() => {
+                                      itemDecrement(item)
+                                    }}
+                                  >
+                                    <Text style={{ textAlign: 'center', color: fBTheme.fBWhite }}>-</Text>
+                                  </TouchableOpacity>
+
+                                  <Text style={{ width: 45, paddingHorizontal: 4, paddingVertical: 6, textAlign: 'center', color: '#000' }}>{item.quantity}</Text>
+
+                                  <TouchableOpacity style={{ width: 35, borderRadius: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: fBTheme.fBPurple, }}
+                                    onPress={() => {
+                                      itemIncrement(item)
+                                    }}
+                                  >
+                                    <Text style={{ textAlign: 'center', color: fBTheme.fBWhite }}>+</Text>
+                                  </TouchableOpacity>
+                                </View>
+
+                                <TouchableOpacity style={{}}
+                                  onPress={() => { removeCartItem(item) }}>
+                                  <MaterialCommunityIcons name={'delete'} size={30} color={fBTheme.fBRed} />
+                                </TouchableOpacity>
+                              </View>
                             </View>
                           </View>
-                        </View>
-                        
-                      )
-                    })}
-                    </View>:
-                  <EmptyView mainMsg={'Your shopping cart is empty.'} subMsg={'Add items you want to shop.'} btnName={'Shop Now'} onpressFunction={() => navigation.goBack()}/>
-                }
-              </ScrollView>
-              {userCartList.length > 0 &&
-                <ChackoutLayout items={userCartList.length} total={getTotal()} navigation={navigation} btnName={'Checkout'} mrpTotal={marpTotal()} fromCart={1}/>
-              }
-            </>
-          </View>
-        </>
-      ) : null}
-      <CheckInternet isConnected={isConnected} setIsConnected={setIsConnected}/>
 
-    </>
+                        )
+                      })}
+                    </View> :
+                    <EmptyView mainMsg={'Your shopping cart is empty.'} subMsg={'Add items you want to shop.'} btnName={'Shop Now'} onpressFunction={() => navigation.goBack()} />
+                  }
+                </ScrollView>
+                {userCartList.length > 0 &&
+                  <ChackoutLayout items={userCartList.length} total={getTotal()} navigation={navigation} btnName={'Checkout'} mrpTotal={marpTotal()} fromCart={1} />
+                }
+              </>
+            </View>
+          </>
+        ) : null}
+        <CheckInternet isConnected={isConnected} setIsConnected={setIsConnected} />
+      </SafeAreaView>
+
+    </SafeAreaProvider>
   )
 }
 export default Cart
