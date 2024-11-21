@@ -40,6 +40,8 @@ const PdfViewer = ({ navigation, route }) => {
                 </TouchableOpacity>
             </View>
 
+
+            {/* commented by Rj Singh 21-11-204 */}
             {/* <Pdf
                 trustAllCerts={false}
                 source={source}
@@ -56,6 +58,7 @@ const PdfViewer = ({ navigation, route }) => {
                 }}
                 style={styles.pdf}
             /> */}
+            {/* commented by Raju Singh 21-11-204 */}
         </View>
     )
 }
