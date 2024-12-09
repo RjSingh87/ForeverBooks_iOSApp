@@ -1,50 +1,51 @@
-import {StyleSheet, StatusBar,} from 'react-native'
-import React, {useContext, useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import { StyleSheet, StatusBar, } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 // navigation //
-  import {createStackNavigator} from '@react-navigation/stack';
-  import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 // navigation //
-  import {apiRoot, cbseboard, fBTheme, token} from './constant';
+import { apiRoot, cbseboard, fBTheme, token } from './constant';
 // Screen //
-  import Splash from './screens/appScreen/Splash';
-  import FbDrawer from './screens/drawerNavigator/FbDrawer';
-  import {useDispatch, useSelector} from 'react-redux';
-  import {addMyProduct} from './screens/reduxTookit/product/ProductSlice';
-  import Services from './services';
-  import BottomTab from './screens/common/BottomTab';
-  
+import Splash from './screens/appScreen/Splash';
+import FbDrawer from './screens/drawerNavigator/FbDrawer';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMyProduct } from './screens/reduxTookit/product/ProductSlice';
+import Services from './services';
+import BottomTab from './screens/common/BottomTab';
+
 // Screen //
-    const StartStack = createStackNavigator()
-    const Drawer = createDrawerNavigator()
+const StartStack = createStackNavigator()
+const Drawer = createDrawerNavigator()
 
-    const MainRoot = ({}) => {
-      
-      
-    const dispatch = useDispatch()
-    const data = useSelector(state => state.product)
+const MainRoot = ({ }) => {
 
-    useEffect(() =>{
-      getPoductList();
-    }, []);
 
-  function getPoductList(){
+  const dispatch = useDispatch()
+  const data = useSelector(state => state.product)
+
+  useEffect(() => {
+    getPoductList();
+  }, []);
+
+  function getPoductList() {
     const payload = {
       "token": token,
-      "board_id": cbseboard 
+      "board_id": cbseboard
     }
     Services.post(apiRoot.productList, payload)
       .then((res) => {
-        if (res.status == 'success'){
-          if(res.data.length){
+        if (res.status == 'success') {
+          if (res.data.length) {
             let newData = res.data.map((item => {
-            let selectedType = item?.productDesc!=undefined?item?.productDesc[0]:null;
-            return{
+              let selectedType = item?.productDesc != undefined ? item?.productDesc[0] : null;
+              return {
                 ...item,
-                selectedType: selectedType}
+                selectedType: selectedType
+              }
             }));
-            newData.map(item =>{
-              if(!data.length>0){
+            newData.map(item => {
+              if (!data.length > 0) {
                 dispatch(addMyProduct(item))
               }
             });
@@ -58,7 +59,7 @@ import {NavigationContainer} from '@react-navigation/native';
       .finally(() => {
       })
   }
-  return(
+  return (
     <NavigationContainer>
       <StatusBar
         barStyle="light-content"
@@ -69,17 +70,17 @@ import {NavigationContainer} from '@react-navigation/native';
       />
       <StartStack.Navigator
         screenOptions={{
-        headerStyle:{backgroundColor: fBTheme.fBPurple},
-        headerTintColor: fBTheme.fBWhite,
-        headerTitleStyle:{
-          fontWeight:'300',
-          flexWrap:'wrap',
-          fontSize:16,
-        }
+          headerStyle: { backgroundColor: fBTheme.fBPurple },
+          headerTintColor: fBTheme.fBWhite,
+          headerTitleStyle: {
+            fontWeight: '300',
+            flexWrap: 'wrap',
+            fontSize: 16,
+          }
         }}
       >
-        <StartStack.Screen name='Splash' component={Splash} options={{headerShown: false}}/>
-        <StartStack.Screen name='Home' component={DrawerRoot} options={{headerShown: false}}/>
+        <StartStack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
+        <StartStack.Screen name='Home' component={DrawerRoot} options={{ headerShown: false }} />
       </StartStack.Navigator>
     </NavigationContainer>
   )
@@ -87,8 +88,8 @@ import {NavigationContainer} from '@react-navigation/native';
 export default MainRoot;
 const DrawerRoot = () => {
   return (
-    <Drawer.Navigator drawerContent={props => <FbDrawer{...props}/>}>
-      <Drawer.Screen name='Forever_Books' component={BottomTab} options={{headerShown: false}}/>
+    <Drawer.Navigator drawerContent={props => <FbDrawer{...props} />}>
+      <Drawer.Screen name='Forever_Books' component={BottomTab} options={{ headerShown: false }} />
     </Drawer.Navigator>
   )
 }

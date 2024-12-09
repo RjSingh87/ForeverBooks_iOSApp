@@ -1290,6 +1290,27 @@ PODS:
     - Yoga
   - react-native-netinfo (11.4.1):
     - React-Core
+  - react-native-pdf (6.7.6):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-pinchable (0.2.1):
     - React-Core
   - react-native-razorpay (2.3.0):
@@ -1889,6 +1910,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-pinchable (from `../node_modules/react-native-pinchable`)
   - react-native-razorpay (from `../node_modules/react-native-razorpay`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
@@ -2016,6 +2038,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blob-util"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pdf:
+    :path: "../node_modules/react-native-pdf"
   react-native-pinchable:
     :path: "../node_modules/react-native-pinchable"
   react-native-razorpay:
@@ -2139,6 +2163,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 02d218c79c72d373a92a8552183f4ead0d1c6e05
   react-native-blob-util: e6a3b23a99ac2c3d9fa48722db049a1e1808efc2
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
+  react-native-pdf: 612757482d19b59e9c2ff42148118248b9080950
   react-native-pinchable: b4381b0807d15c12b14bfacd927128f52d96f0f1
   react-native-razorpay: 0272dd684bc9148828c54a72e05059e3e2e8b813
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe

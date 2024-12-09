@@ -93,7 +93,7 @@ const CBSE = ({ navigation, route }) => {
 
   const endVoice = async () => {
     setSearchLoader(true)
-    
+
     try {
       Voice.removeAllListeners();
       await Voice.stop()
@@ -103,10 +103,10 @@ const CBSE = ({ navigation, route }) => {
       console.log(error)
     }
   }
-  const onSpeechError = (e)=>{
+  const onSpeechError = (e) => {
     setIsListening(false);
     setSearchType(((prev) => {
-      return {...prev, status: false}
+      return { ...prev, status: false }
     }))
 
     // ?? //
@@ -183,7 +183,7 @@ const CBSE = ({ navigation, route }) => {
             });
             setIsLoader(false)
           } else {
-            Alert.alert('Info!','data not found.')
+            Alert.alert('Info!', 'data not found.')
           }
         })
         .catch((err) => {
@@ -195,7 +195,7 @@ const CBSE = ({ navigation, route }) => {
     }
     if (Val == 'subject') {
       if (selectData.class == null) {
-        Alert.alert('Info!','Select class first.')
+        Alert.alert('Info!', 'Select class first.')
       } else {
         setIsLoader(true)
         setModalVisibility((prev) => {
@@ -218,7 +218,7 @@ const CBSE = ({ navigation, route }) => {
               });
               setIsLoader(false)
             } else {
-              Alert.alert('Info','data not found.')
+              Alert.alert('Info', 'data not found.')
             }
           })
           .catch((err) => {
@@ -302,30 +302,30 @@ const CBSE = ({ navigation, route }) => {
     })
   }
   const onRefresh = useCallback((val) => {
-    if(val=='clear'){
-        setSearchError(false)
-        setSearchType((prev) => {
+    if (val == 'clear') {
+      setSearchError(false)
+      setSearchType((prev) => {
         return { ...prev, status: true }
       })
-    setSearch('')
-    }else{
-        setIsListening(false)
-        setLoading(true);
-        setProductList((prev) => {
-          return { ...prev, list: data }
-        });
-        setSearchError(false)
-        setSelectData({ class: null, subject: null })
-        setDetectVoice('')
-        setSearchType((prev) => {
-          return { ...prev, status: false }
-        })
+      setSearch('')
+    } else {
+      setIsListening(false)
+      setLoading(true);
+      setProductList((prev) => {
+        return { ...prev, list: data }
+      });
+      setSearchError(false)
+      setSelectData({ class: null, subject: null })
+      setDetectVoice('')
+      setSearchType((prev) => {
+        return { ...prev, status: false }
+      })
     }
   }, []);
 
-  
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: fBTheme.fBPurple }}>
       {isConnected == true ? (
         <View style={{ flex: 1, backgroundColor: fBTheme.fBLigh }}>
           {!searchType.status ?
@@ -345,17 +345,17 @@ const CBSE = ({ navigation, route }) => {
                   <View style={{ backgroundColor: '#fff', flex: 1, height: 40, borderBottomLeftRadius: 6, borderTopLeftRadius: 6, paddingHorizontal: 10, justifyContent: 'center' }}>
                     <Text style={{ color: selectData.subject == null ? fBTheme.fbGray : "#000" }}>{selectData.subject == null ? 'Subject' : (selectData.subject.name.length >= 10 ? selectData.subject.name.substring(0, 9) + '...' : selectData.subject.name)}</Text>
                   </View>
-                  <View style={{ backgroundColor: '#fff', width: 40, height: 40, borderTopRightRadius: 6, borderBottomRightRadius: 6, justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={{ backgroundColor: '#fff', width: 40, height: 40, borderTopRightRadius: 6, borderBottomRightRadius: 6, justifyContent: 'center', alignItems: 'center' }}>
                     <Feather name='chevron-down' size={20} />
                   </View>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={{width: 44, justifyContent: 'center', alignItems: 'center'}}
+              <TouchableOpacity style={{ width: 44, justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
                   searchManual('key')
                 }}
               >
-                <Ionicons name='search' size={24} color={fBTheme.fBWhite}/>
+                <Ionicons name='search' size={24} color={fBTheme.fBWhite} />
               </TouchableOpacity>
               {/* <TouchableOpacity style={{ width: 44, justifyContent: 'center', alignItems: 'center'}}
                 onPress={() => searchManual('mic')}>
@@ -365,39 +365,39 @@ const CBSE = ({ navigation, route }) => {
                 }
               </TouchableOpacity> */}
             </View> :
-            <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', backgroundColor: fBTheme.fBPurple, paddingHorizontal: 10, paddingVertical: 10}}>
-              <View style={{ flexDirection: 'row', width: "80%"}}>
-                <View style={{ flex: 1, height: 40,}}>
-                  <TextInput autoFocus={searchType.type == "key" ? true:false} editable={searchType.type == "key" ? true : false} type='text' placeholder={searchType.type == "key" ? "Search here..." : "Listening...."} value={searchType.type == "key" ? search: detectVoice} placeholderTextColor={fBTheme.fbGray} style={{color: '#000', flex: 1, paddingLeft: 10, backgroundColor: 'white', borderTopLeftRadius: 6, borderBottomLeftRadius: 6}}
+            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', backgroundColor: fBTheme.fBPurple, paddingHorizontal: 10, paddingVertical: 10 }}>
+              <View style={{ flexDirection: 'row', width: "80%" }}>
+                <View style={{ flex: 1, height: 40, }}>
+                  <TextInput autoFocus={searchType.type == "key" ? true : false} editable={searchType.type == "key" ? true : false} type='text' placeholder={searchType.type == "key" ? "Search here..." : "Listening...."} value={searchType.type == "key" ? search : detectVoice} placeholderTextColor={fBTheme.fbGray} style={{ color: '#000', flex: 1, paddingLeft: 10, backgroundColor: 'white', borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}
                     onChangeText={val => {
                       setSearch(val);
-                      if(val!=''){
-                      filterData(val);
+                      if (val != '') {
+                        filterData(val);
                       }
                     }}
                   />
                 </View>
-                <TouchableOpacity delayPressIn={150} style={{width: 45, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderTopRightRadius: 6, borderBottomRightRadius: 6}}
+                <TouchableOpacity delayPressIn={150} style={{ width: 45, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderTopRightRadius: 6, borderBottomRightRadius: 6 }}
                   onPress={() => {
-                    if(search != ''){
+                    if (search != '') {
                       onRefresh('clear')
                     } else {
                       setSearchType(((prev) => {
-                        return {...prev, status: false}
+                        return { ...prev, status: false }
                       }))
                       setDetectVoice('')
                       setIsListening(false)
                       setSelectData((prev) => {
-                        return {...prev, class: null, subject: null}
+                        return { ...prev, class: null, subject: null }
                       })
                       setProductList((prev) => {
-                        return {...prev, list: data}
+                        return { ...prev, list: data }
                       });
                       setSearchError(false)
                     }
                   }}
                 >
-                  <Ionicons name={search == '' ? "chevron-back" : "close"} size={24} color={fBTheme.fBPurple}/>
+                  <Ionicons name={search == '' ? "chevron-back" : "close"} size={24} color={fBTheme.fBPurple} />
                 </TouchableOpacity>
               </View>
               {searchType.type != "key" &&
@@ -406,11 +406,11 @@ const CBSE = ({ navigation, route }) => {
                     isListening ?
                       searchManual("goBack") :
                       setSearchType(((prev) => {
-                        return {...prev, status: false}
+                        return { ...prev, status: false }
                       }));
-                      setProductList((prev) => {
-                        return {...prev, list: data}
-                      });
+                    setProductList((prev) => {
+                      return { ...prev, list: data }
+                    });
                     setSearchError(false)
                   }
                   }>
@@ -420,7 +420,7 @@ const CBSE = ({ navigation, route }) => {
                       style={styles.recording}
                     />
                     :
-                    <Ionicons name='mic' size={24} color={fBTheme.fBWhite}/>
+                    <Ionicons name='mic' size={24} color={fBTheme.fBWhite} />
                   }
                 </TouchableOpacity>
 
@@ -554,29 +554,29 @@ function ListItem({ item, index, viewProductDetail }) {
   // return null;
   return (
     <>
-    {item.productDesc!=undefined?
-    <TouchableOpacity style={{ marginVertical: 10, flexDirection: 'row', flex: 1, padding: 10, borderRadius: 6, backgroundColor: fBTheme.fBWhite, elevation: .7 }} key={item.product_id}
-      onPress={() => viewProductDetail(item.product_id, index)}>
-      <View style={{ width: 120, height: 140, borderRadius: 6, overflow: 'hidden' }}>
-        <Image style={{ width: "100%", height: '100%' }} source={{ uri: item?.selectedType?.product_image_path + item.selectedType?.product_cover_image }} />
-      </View>
-      <View style={{ paddingLeft: 15, flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 15, color: '#000', fontWeight: '500', textTransform: 'capitalize' }}>{productTitle}</Text>
-          <Text style={{ fontWeight: '500', color: '#000', marginTop: 4}}>{item.selectedType?.book_type_name}</Text>
-          <View style={{ marginVertical: 6 }}>
-            <Text style={{ color: fBTheme.fbGray }}>{productDes}</Text>
+      {item.productDesc != undefined ?
+        <TouchableOpacity style={{ marginVertical: 10, flexDirection: 'row', flex: 1, padding: 10, borderRadius: 6, backgroundColor: fBTheme.fBWhite, elevation: .7 }} key={item.product_id}
+          onPress={() => viewProductDetail(item.product_id, index)}>
+          <View style={{ width: 120, height: 140, borderRadius: 6, overflow: 'hidden' }}>
+            <Image style={{ width: "100%", height: '100%' }} source={{ uri: item?.selectedType?.product_image_path + item.selectedType?.product_cover_image }} />
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 10, borderTopWidth: .5, borderBottomWidth: .5, padding: 4 }}>
-            <Text style={{ color: fBTheme.fBGreen, fontSize: 18, }}>₹{item?.selectedType?.product_sale_price}</Text>
-            {item?.selectedType?.product_sale_price<item?.selectedType?.product_mrp_price?
-            <Text style={{ textDecorationLine: 'line-through', color: fBTheme.fbGray, marginLeft: 20, marginTop: 4 }}>₹ {item?.selectedType?.product_mrp_price}</Text>:null
-            }
+          <View style={{ paddingLeft: 15, flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, color: '#000', fontWeight: '500', textTransform: 'capitalize' }}>{productTitle}</Text>
+              <Text style={{ fontWeight: '500', color: '#000', marginTop: 4 }}>{item.selectedType?.book_type_name}</Text>
+              <View style={{ marginVertical: 6 }}>
+                <Text style={{ color: fBTheme.fbGray }}>{productDes}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', marginTop: 10, borderTopWidth: .5, borderBottomWidth: .5, padding: 4 }}>
+                <Text style={{ color: fBTheme.fBGreen, fontSize: 18, }}>₹{item?.selectedType?.product_sale_price}</Text>
+                {item?.selectedType?.product_sale_price < item?.selectedType?.product_mrp_price ?
+                  <Text style={{ textDecorationLine: 'line-through', color: fBTheme.fbGray, marginLeft: 20, marginTop: 4 }}>₹ {item?.selectedType?.product_mrp_price}</Text> : null
+                }
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-    </TouchableOpacity>:null
-    }
+        </TouchableOpacity> : null
+      }
 
     </>
   )

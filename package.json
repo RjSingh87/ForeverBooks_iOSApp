@@ -27,6 +27,7 @@
     "react-native-image-crop-picker": "^0.41.5",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.5",
+    "react-native-pdf": "^6.7.6",
     "react-native-phone-call": "^1.2.0",
     "react-native-pinchable": "^0.2.1",
     "react-native-razorpay": "^2.3.0",

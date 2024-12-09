@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
 import React from 'react'
-// import Pdf from 'react-native-pdf'
+import Pdf from 'react-native-pdf'
 import Share from 'react-native-share'
 import { fBTheme } from '../../constant';
 
@@ -42,7 +42,7 @@ const PdfViewer = ({ navigation, route }) => {
 
 
             {/* commented by Rj Singh 21-11-204 */}
-            {/* <Pdf
+            <Pdf
                 trustAllCerts={false}
                 source={source}
                 onLoadComplete={(numberOfPages, filePath) => {
@@ -57,7 +57,7 @@ const PdfViewer = ({ navigation, route }) => {
                     console.log(`Link pressed: ${uri}`);
                 }}
                 style={styles.pdf}
-            /> */}
+            />
             {/* commented by Raju Singh 21-11-204 */}
         </View>
     )

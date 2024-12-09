@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, FlatList, ScrollView, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, FlatList, ScrollView, Platform, Alert } from 'react-native';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FBLogo from '../../assets/fBCircleLogo.png'
@@ -11,6 +11,7 @@ import Loader from '../common/Loader';
 import { MyData } from '../../Store';
 import { useSelector } from 'react-redux';
 import Carousel from 'react-native-reanimated-carousel';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const { height, width } = Dimensions.get('window');
 
 const Dashboard = ({ navigation, route }) => {
@@ -109,7 +110,7 @@ const Dashboard = ({ navigation, route }) => {
   return (
 
     <>
-      <SafeAreaView style={{ flex: 1, backgroundColor: fBTheme.fBPurple }}>
+      <SafeAreaView edges={['top', "right", "right"]} style={{ flex: 1, backgroundColor: fBTheme.fBPurple }}>
         {isConnected == true ? (
           <>
             {newReleaseList.status || bestSellerBook.status ?
@@ -192,6 +193,12 @@ const Dashboard = ({ navigation, route }) => {
           </>
         ) : null}
         <CheckInternet isConnected={isConnected} setIsConnected={setIsConnected} />
+
+
+        {/* <Text onPress={(() => {
+          navigation.navigate("FlatListPage")
+        })}>Checking</Text> */}
+
       </SafeAreaView>
     </>
   )

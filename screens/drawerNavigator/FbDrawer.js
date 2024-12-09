@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, RefreshControl, Share, Alert} from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, RefreshControl, Share, Alert } from 'react-native'
 import React, { useContext, useEffect, useState, useCallback } from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -9,14 +9,16 @@ import { MyData } from '../../Store'
 import { fBTheme, mainURL, token } from '../../constant'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProfileData } from '../reduxTookit/address/ProfileSlice'
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const FbDrawer = ({ navigation }) => {
-  
+
   const { loginStatus, logOut, addUserData } = useContext(MyData)
   const userprofileData = useSelector(state => state.profileData.data)
   const [active, setActive] = React.useState('');
   const [isLoading, setLoading] = useState(false)
   const dispatch = useDispatch()
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     getCustomerProfileData()
@@ -96,7 +98,7 @@ const FbDrawer = ({ navigation }) => {
                 width: '100%',
                 height: '100%',
                 borderRadius: 100,
-              }} source={require('../../assets/fBCircleLogo.png')}/>
+              }} source={require('../../assets/fBCircleLogo.png')} />
             }
           </View>
         </ImageBackground>
@@ -105,7 +107,7 @@ const FbDrawer = ({ navigation }) => {
         <Text style={{ paddingVertical: 8, color: '#000', textAlign: 'center', marginTop: 55, fontWeight: '500', textTransform: 'capitalize' }}>{userprofileData?.firstname + ' ' + userprofileData?.lastname}</Text> :
         <Text style={{ paddingVertical: 8, textAlign: 'center', marginTop: 55, fontFamily: 'Trajan Pro Bold', fontSize: 18, color: fBTheme.fBPurple }}><Text style={{ color: 'red' }}>FOREVER</Text> BOOKS</Text>
       }
-      <View style={{flex: 1, paddingVertical: 20}}>
+      <View style={{ flex: 1, paddingVertical: 20 }}>
         <Drawer.Section
           showDivider={false}
         >
@@ -125,7 +127,7 @@ const FbDrawer = ({ navigation }) => {
             label="Share App"
             icon={({ size }) => <MaterialIcons color={fBTheme.fBPurple} size={size} name='share' />}
             active={active === 'Share App'}
-            onPress={() => { onShare(); navigation.closeDrawer() }}/>
+            onPress={() => { onShare(); navigation.closeDrawer() }} />
 
           {loginStatus.isLogin ?
             <Drawer.Item
@@ -136,7 +138,7 @@ const FbDrawer = ({ navigation }) => {
             /> :
             <Drawer.Item
               label="Login/Signup"
-              icon={({ size }) => <MaterialIcons color={fBTheme.fBPurple} size={size} name='login'/>}
+              icon={({ size }) => <MaterialIcons color={fBTheme.fBPurple} size={size} name='login' />}
               active={active === 'Login'}
               onPress={() => navigation.navigate('Login')}
             />
@@ -146,13 +148,13 @@ const FbDrawer = ({ navigation }) => {
             <>
               <Drawer.Item
                 label="Wish List"
-                icon={({ size }) => <Ionicons color={fBTheme.fBPurple} size={size} name='heart-outline'/>}
+                icon={({ size }) => <Ionicons color={fBTheme.fBPurple} size={size} name='heart-outline' />}
                 active={active === 'WishList'}
                 onPress={() => navigation.navigate('WishList')}
               />
               <Drawer.Item
                 label="Sign Out"
-                icon={({ size }) => <MaterialIcons color={fBTheme.fBPurple} size={size} name='logout'/>}
+                icon={({ size }) => <MaterialIcons color={fBTheme.fBPurple} size={size} name='logout' />}
                 active={active === 'Sign Out'}
                 onPress={(() => { logOut() })}
               />
@@ -160,8 +162,8 @@ const FbDrawer = ({ navigation }) => {
           }
         </Drawer.Section>
       </View>
-      <View style={{ height: 20, borderTopWidth: 1, borderColor: fBTheme.fBLigh, width: '100%', justifyContent: 'center', alignItems: 'center', paddingLeft: 10 }}>
-        <Text style={{color: fBTheme.fBPurple, fontSize: 12,}}>V: 3.1</Text>
+      <View style={{ height: 20, bottom: insets.bottom, borderTopWidth: 1, borderColor: fBTheme.fBLigh, width: '100%', justifyContent: 'center', alignItems: 'center', paddingLeft: 10 }}>
+        <Text style={{ color: fBTheme.fBPurple, fontSize: 12, }}>V: 3.1</Text>
       </View>
     </View>
   )
